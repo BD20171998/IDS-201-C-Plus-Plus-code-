@@ -1,0 +1,158 @@
+//Program discription: This program determines the total 
+//This program compiled successfully.
+
+//header files
+#include <iostream.h>
+#include <iomanip.h>
+
+//defining sales tax rate
+#define tax 0.075
+
+//main function
+int main ()                                   
+{                                             
+//declaring variables
+
+char	response,
+      response2,
+      response3,
+      response_a; 
+      
+int	line,
+      num_books,
+   	num_books_sold,
+   	num_orders;
+
+double	tax_cost,
+            books_quant_tax,
+            tot_receipts,
+      	book_cost,
+      	books_and_quant;
+                                   
+//setting precision for dollar amounts
+cout << setprecision(2)                       
+     << setiosflags(ios::fixed)               
+     << setiosflags(ios::showpoint);          
+
+//presetting all counters                                              
+num_books_sold=0;
+num_orders=0;
+tot_receipts =0;
+
+//clear screen                                                                                
+for(line = 1; line<=25; ++line)
+cout<<"\n";
+
+//asking if there is an order to process
+cout<<”\nIs there an order to process?”
+    <<”\n(y for yes or n for no): “;
+cin.get();
+response=cin.get();    
+
+    
+//processing main loop                                                       
+do 
+{
+//incrementing order counter
+++num_orders;
+
+//getting price of first book
+cout<<”\n\nEnter price of the book:$”;
+cin>>book_cost;
+
+//getting quantity of the first book ordered
+cout<<”\n\nHow many copies were ordered?: “;
+cin>>num_books;
+
+//incrementing books sold counter
+num_books_sold += num_books;
+
+//calculating tax cost,books cost w/o tax, and order total 
+books_and_quant = book_cost * num_books;
+tax_cost = books_and_quant * tax;
+books_quant_tax = tax_cost + books_and_quant;
+
+//incrementing total receipts counter
+tot_receipts += books_quant_tax;  
+
+//displaying cost of the first book total
+cout<<”\n\nTotal first book order:$”
+    << books_quant_tax;
+
+//asking if more books to process
+cout<<”\n\nAre there more books to process?”
+    <<”\n(y for yes or n for no): “;
+
+cin.get();
+response2= cin.get();
+ 
+while ( response2== ‘y’ || response2== ‘Y’)
+{
+//getting price of next book
+cout<<”\n\nEnter price of the book:$”;
+cin>>book_cost;
+
+//getting quantity of the book ordered
+cout<<”\n\nHow many copies were ordered?: “;
+cin>>num_books;
+
+//incrementing books sold counter
+num_books_sold += num_books;
+
+//calculating tax cost,books cost w/o tax, and order total 
+books_and_quant = book_cost * num_books;
+tax_cost = books_and_quant * tax;
+books_quant_tax = tax_cost + books_and_quant;
+
+//incrementing total receipts counter
+tot_receipts += books_quant_tax;  
+
+//displaying cost of the book total
+cout<<”\n\nTotal book order:$”
+    	<< books_quant_tax;
+
+//asking if more books to process
+cout<<”\n\nAre there more books to process?”
+    <<”\n(y for yes or n for no): “;
+
+cin.get();
+response2= cin.get();
+}
+
+//if there are no more books to be processed after the first one
+while (response2== ‘n’ || response2== ‘N’) 
+{
+//asking if ther is another order to be processed
+cout<<”\n\nDo you want to process another order?”
+      <<”\n(y for yes or n for no): “;
+      cin.get();
+response3=cin.get();
+break;
+}
+
+//if response is no
+if ((response == ‘n’ || response == ‘N’) || (response3==’n’ || response3==’N’))
+{
+//clear screen                                                                                
+for(line = 1; line<=25; ++line)
+cout<<"\n";
+
+//displaying total receipts, number of books sold and orders processed
+cout<<”Total receipts for orders:$”
+<<tot_receipts
+<<”\n\n\nTotal number of orders processed: “
+<<num_orders
+<<”\n\n\nTotal number of books sold: “
+<<num_books_sold;
+break;
+}
+}
+while ( (response == ‘y’ || response == ‘Y’) || (response3==’y’ || response3==’Y’) );
+
+
+
+
+//exiting program  
+return 0;                                                                                                                           
+}                                                               
+
