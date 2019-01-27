@@ -1,0 +1,455 @@
+//header files
+#include <iostream.h>
+#include <iomanip.h>
+#include <string.h>
+
+//symbolic constants for useful life and dep factor
+#define useful_life 3
+#define max 5
+
+//defining structure for depreciation methods
+struct DEP_METHOD
+{
+int year[useful_life];
+double dep_exp [useful_life];
+double acc_dep [useful_life];
+double book_value [useful_life];
+};
+
+//function prototypes
+void Get_Dep_Info(double*, double*);
+void Clear_Screen(int);
+char* Login(void);
+void Display_Menu(int, int, int, char*);
+DEP_METHOD Calc_Straight_Line(double, double, int*);
+void Disp_Schedule (DEP_METHOD, double, int, int, int);
+int Get_Dep_Factor(void);
+DEP_METHOD  Calc_Declining_Bal (double, double, int*, int);
+DEP_METHOD Calc_Sum_Year_Digits (double, double, int*);
+char Pause(char);
+
+//main function
+int main()
+{
+DEP_METHOD str_line;
+DEP_METHOD decline_bal;
+DEP_METHOD sum_year_digits;
+
+//declaring variables and pointers
+char option,
+       pause;
+
+char*	choice= &option;
+
+char* login;
+
+double salvage,
+           purchase;
+
+double*	salvage_ptr = &salvage;
+             
+double* purchase_ptr=&purchase;
+
+int	fact,
+            line,
+            option_a_done, 
+            option_b_done,
+option_c_done;
+
+int*	done_a = &option_a_done;
+int*	done_b = &option_b_done;
+int*	done_c = &option_c_done;
+
+//setting precision
+cout<<setprecision(2)
+    <<setiosflags(ios::fixed)
+    <<setiosflags(ios::showpoint);
+
+//function for login
+login = Login();
+
+//funtion to clear the screen
+Clear_Screen(line);
+
+//function to get depreciation information
+Get_Dep_Info(&salvage, &purchase);
+
+Clear_Screen(line);
+
+option_a_done = 0;
+option_b_done = 0;
+option_c_done = 0;
+
+//function for main menu
+Display_Menu(option_a_done, option_b_done, option_c_done, &option);
+
+//if method A chosen first
+
+if (option == 'A' || option == 'a')
+{
+str_line= Calc_Straight_Line(salvage, purchase, &option_a_done);
+Clear_Screen(line);
+Disp_Schedule (str_line, purchase, option_a_done, option_b_done, option_c_done);
+Pause (pause);
+Clear_Screen(line);
+Display_Menu(option_a_done, option_b_done, option_c_done, &option);
+}
+
+//if method B is chosen first
+if (option == 'B' || option == 'b')
+{
+fact= Get_Dep_Factor ();
+decline_bal = Calc_Declining_Bal (salvage, purchase, &option_b_done, fact);
+Clear_Screen(line);
+Disp_Schedule (decline_bal,purchase, option_a_done, option_b_done, option_c_done);
+Pause (pause);
+Clear_Screen(line);
+Display_Menu(option_a_done, option_b_done, option_c_done, &option);
+}
+
+//if method C is chosen first
+if (option == 'C' || option == 'c')
+{
+sum_year_digits = Calc_Sum_Year_Digits (salvage, purchase, &option_c_done);
+Clear_Screen(line);
+Disp_Schedule (sum_year_digits,purchase, option_a_done, option_b_done, option_c_done);
+Pause (pause);
+Clear_Screen(line);
+Display_Menu(option_a_done, option_b_done, option_c_done, &option);
+}
+
+//de-alocating heap storage used
+delete []login;
+
+//ending statement after all choice are used
+cout<<”Ending Program”
+    <<”\n\nThank you ”
+    <<login;      
+  
+return 0;            
+} 
+                   
+//defining function for getting depreciation information                     
+void Get_Dep_Info(double* sal_value, double* pur_cost)
+{
+//getting purchase cost
+cout<<"Enter purchase cost of";
+cout<<"\nthe item please: $";
+cin>>*pur_cost;
+
+//error statement for purchase cost
+while (*pur_cost>10000.00 || *pur_cost<0.00)
+{
+cout<<"\nIncorrect amount, purchase cost";
+cout<<"\nmust be between $0.00 and $10,000.00";
+cout<<"\n\nPurchase cost: $";
+cin>>*pur_cost;
+}
+
+
+//getting salvage value
+cout<<"\n\nNow enter salvage value of";
+cout<<"\nthe item please: $";
+cin>>*sal_value;
+
+//error statement for salvage value
+while (*sal_value>10000.00 || *sal_value<0.00)
+{
+cout<<"\nIncorrect amount, salvage value";
+cout<<"\nmust be between $0.00 and $10,000.00";
+cout<<"\n\nSalvage value: $";
+cin>>*sal_value;
+}
+
+return;
+
+}  
+
+//defining clear screen function
+void Clear_Screen(int line_c)
+{  
+for (line_c = 1; line_c <= 25; ++line_c)    
+            cout << "\n";
+return;
+}
+
+//defining login screen function
+char* Login()
+{
+char buffer[81];
+
+char* name;
+
+cout<<”\nPlease type your name and hit enter” 
+      <<”\nto login:”;
+
+cin.getline(buffer, 81);
+
+name = new char [strlen (buffer) + 1];
+
+strcpy(name, buffer);
+
+return name;
+}    
+
+//defining menu 
+void Display_Menu(int a_done, int b_done, int c_done, char* choice1)
+{                                      
+cout<<"\n\n\t\tDepreciation Method Scheduler";    
+cout<<"\n\n\tPlease choose your method from the list below.";
+
+if (a_done == 0)                                    
+cout << "\n\n\tA.  Straight Line"; 
+
+if (b_done == 0)                                     
+cout << "\n\n\tB.  Declining Balance";
+
+if (c_done == 0)                                     
+cout << "\n\n\tC.  Sum of Years' Digits";
+
+cout << "\n\n\tQ.  Quit Program";
+                                  
+cout << "\n\n\tEnter your selection:  ";      
+
+cin.get();
+*choice1 = cin.get();
+
+return ;                                                            
+}
+
+DEP_METHOD Calc_Straight_Line(double sal_value, double pur_cost, int* done1)
+{
+*done1 = 1;
+
+DEP_METHOD s;
+
+int years;
+
+double acc_dep,
+           b_value,
+           year_amt;
+
+acc_dep = 0;
+b_value= pur_cost;
+
+year_amt = (pur_cost - sal_value) / useful_life;
+
+for (years=0; years<useful_life; ++years)
+{
+s.year [years]  = years+1;
+s.dep_exp[years] = year_amt;
+s.acc_dep[years] = acc_dep += year_amt; 
+s.book_value [years] = b_value -= year_amt;
+}
+
+return s; 
+
+}
+
+DEP_METHOD Calc_Declining_Bal (double sal_value, double pur_cost, int* done2, int factor)
+{
+*done2 = 1;
+
+DEP_METHOD s;
+
+int years;
+
+double acc_dep,
+           b_value,
+           year_amt, 
+           str_rate, 
+           const_rate;
+
+acc_dep = 0;
+b_value= pur_cost;
+
+str_rate= double (1) / useful_life;
+const_rate= str_rate * factor;
+
+for (years = 0; years<factor; ++years)
+{
+year_amt =  const_rate * b_value; 
+
+s.year [years]  = years+1;
+s.dep_exp[years] = year_amt;
+s. book_value [years] = acc_dep += year_amt; 
+s. acc_dep [years] = b_value -= year_amt;
+}
+
+return s; 
+
+}
+
+DEP_METHOD Calc_Sum_Year_Digits (double sal_value, double pur_cost, int* done3)
+{
+*done3 = 1;
+
+DEP_METHOD s;
+
+int denominator, 
+     numerator,
+     years;
+
+double acc_dep,
+           b_value,
+           year_amt, 
+           str_rate, 
+           const_rate;
+
+denominator=0;
+acc_dep = 0;
+b_value= pur_cost;
+
+for (int years = 0; years < useful_life; ++years)
+denominator += years+1;
+         
+numerator = useful_life;
+
+for(years = 0; years <useful_life; ++years) 
+{
+year_amt = ((pur_cost - sal_value) * (double(numerator) / denominator));
+numerator -= 1;
+s.year [years]  = years+1;
+s.dep_exp[years] = year_amt;
+s.acc_dep[years] = b_value -= year_amt;
+s.book_value [years] = acc_dep += year_amt; 
+}
+
+return s;
+}
+
+void Disp_Schedule(DEP_METHOD a, double pur_cost, int a_done, int b_done, int c_done)
+{
+int	row;
+
+cout<<"Yearly Depreciation Schedule at Acquisition:$";
+cout<<pur_cost;
+
+cout<<"\n";
+
+if(a_done==1)
+{
+for (row=0; row<useful_life; ++row)
+{
+cout<<a.year [row];
+cout<<"\n";
+}
+
+for (row=0; row<useful_life; ++row)
+{
+cout<<a.dep_exp[row];
+cout<<"\n";
+}
+
+for (row=0; row<useful_life; ++row)
+{
+cout<<a.book_value [row];
+cout<<"\n";
+}
+
+for (row=0; row<useful_life; ++row)
+{
+cout<<a.acc_dep[row];
+cout<<"\n";
+}
+
+cout<<"The Straight Line is done";
+}
+
+if(b_done==1)
+{
+
+for (row=0; row<useful_life; ++row)
+{
+cout<<a.year [row -1];
+cout<<"\n";
+}
+
+for (row=0; row<useful_life; ++row)
+{
+cout<<a.dep_exp[row - 1];
+cout<<"\n";
+}
+
+for (row=0; row<useful_life; ++row)
+{
+cout<<a.book_value [row -1];
+cout<<"\n";
+}
+
+for (row=0; row<useful_life; ++row)
+{
+cout<<a.acc_dep[row -1];
+cout<<"\n";
+}
+
+cout<<"The Double Declining is done";
+}
+
+if(c_done==1)
+{
+
+for (row=0; row<useful_life; ++row)
+{
+cout<<a.year [row];
+cout<<"\n";
+}
+
+for (row=0; row<useful_life; ++row)
+{
+cout<<a.dep_exp[row];
+cout<<"\n";
+}
+
+for (row=0; row<useful_life; ++row)
+{
+cout<<a.book_value [row];
+cout<<"\n";
+}
+
+for (row=0; row<useful_life; ++row)
+{
+cout<<a.acc_dep[row];
+cout<<"\n";
+}
+
+cout<<"The Sum of Digits is done";
+}
+
+
+return;
+}
+
+int Get_Dep_Factor()
+{
+int factor;
+
+do
+{
+cout << "\nPlease Enter the Depreciation Factor:  ";
+cin >> factor;
+
+if ((factor < 0) || (factor > max)) 
+{
+cout << "\n\nDepreciation factor entered is too large.";
+cout << "\nPlease enter factor again.\n\n";
+}
+
+}
+while((factor < 0) || (factor > max));
+
+return factor;
+}
+
+char Pause (char p)
+{
+cout << "\n\nPress the enter key to continue.";
+                                                                                
+         do                                                         
+         {                                                    
+            cin.get(); //Clear the '\n'.                        
+            p = cin.get();                                      
+         }                                                       
+         while (p != '\n');  
+return p;
+}
