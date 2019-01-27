@@ -1,0 +1,264 @@
+//Program discription:This program calculates the charges and //number of days a customer rents a computer with or without //options. It also tabulates the total number of customers //processed, total charges collected from the customers, and the //number of computer systems used for each type.          
+//This program compiled successfully.
+
+//header files
+#include <iostream.h>
+#include <iomanip.h>
+
+//defining rates
+#define rate_F_1 15.00
+#define rate_F_2 12.50
+#define rate_F_3 13.50
+#define rate_F_4 10.50
+#define rate_F_5 21.00
+#define rate_F_6 19.00
+#define rate_F_7 18.50
+#define rate_F_8 15.50
+
+//declaring variables
+char    comp_type,
+        monitor_ch,                   
+        printer_ch,                   
+        response;                     
+                                      
+double  cust_charge,                  
+            disp_charge,              
+            tot_charge;               
+                                      
+int     cust_days,                    
+        line,        
+        num_cust,
+  num_of_p,
+  num_of_f;                     
+
+//main function
+int main ()                                   
+{                                             
+
+//setting precision for dollar amounts
+cout << setprecision(2)                       
+     << setiosflags(ios::fixed)               
+     << setiosflags(ios::showpoint);          
+
+//presetting all counters                                              
+num_cust= 0; 
+num_of_p= 0;
+num_of_f= 0;                                  
+tot_charge= 0.00;           
+
+//do while loop for calculations and output                   
+do                                                    
+{                                                     
+
+//clear screen                                                                                
+for(line = 1; line<=25; ++line)
+cout<<"\n";
+
+//chosing type of computer rented                                                      
+cout<<"\n\nPlease enter the type of computer rented"  
+    <<"\n(F for Pentium I P for Pentium II) : ";      
+
+comp_type= cin.get();                                 
+
+switch(comp_type)                             
+{                                             
+//if Pentium chosen
+case 'F':                                     
+case 'f':                                     
+
+//deciding if monitor was used                                              
+cout<<"\nWas a monitor rented?"
+    <<”\n(y for yes or n for no): “;                                      
+cin.get();                                    
+monitor_ch=cin.get();                         
+                                              
+//deciding if printer was used                                              
+cout<<"\nDid you also rent a printer?"
+    <<”\n(y for yes or n for no): “;                         
+cin.get();                                                                
+printer_ch= cin.get();                                                    
+
+//getting number of days user rented equipment                                                                           
+cout<<"\nEnter number of days equipment was rented: ";                    
+cin>> cust_days;                                                          
+
+//calculations if monitor and a printer were rented                                                                          
+if ( (monitor_ch=='y' || monitor_ch== 'Y') && (printer_ch=='y' ||         
+printer_ch== 'Y') )                                                       
+{                                                                         
+cust_charge=rate_F_1 * cust_days;                                       
+disp_charge= rate_F_1;
+tot_charge +=cust_charge;
+++num_of_f;
+++num_cust;                                                                                                                         
+}                                                                       
+
+//calculations if monitor was rented but printer was not                                                                                                                                                 
+if ( (monitor_ch=='y' || monitor_ch== 'Y') && (printer_ch=='n' ||       
+printer_ch== 'N') )                                                     
+{                                                                       
+cust_charge=rate_F_2 * cust_days;                                       
+disp_charge= rate_F_2;
+tot_charge +=cust_charge;
+++num_of_f;
+++num_cust;                                                                                                                         
+}                                                                       
+
+//calculations if monitor was not rented but printer was                                                                                                                                             
+if ( (monitor_ch=='n' || monitor_ch=='N') && (printer_ch=='y' ||          
+printer_ch== 'Y') )                                                       
+{                                                                         
+cust_charge=rate_F_3 * cust_days;                                         
+disp_charge= rate_F_3; 
+tot_charge +=cust_charge;
+++num_of_f;
+++num_cust;                                                                                                                          
+}                                                                         
+
+//calculations if monitor and printer were not rented
+if ( (monitor_ch=='n' || monitor_ch=='N') && (printer_ch=='n' ||          
+printer_ch== 'N') )                                                       
+{                                                                       
+cust_charge=rate_F_4* cust_days;                                        
+disp_charge= rate_F_4; 
+tot_charge +=cust_charge; 
+++num_of_f;   
+++num_cust;                                                                                                                    
+}                                                                       
+
+//clear screen                                                                        
+for(line = 1; line<=25; ++line)
+cout<<"\n";
+
+//displaying individual customer charge, rental charge per day, and days 
+//rented
+cout<<"\n\nCharge for customer:$"<<cust_charge                                
+<<"\nRental charge per day: $"<<disp_charge 
+<<"\nNumber of days rented: "<<cust_days;                             
+
+//deciding if another customer is to be processed                                                                        
+cout<<"\n\nDo you want to process another customer?"
+    <<”\n(y for yes or n for no): “;                                          
+cin.get();                                                           
+response=cin.get();                                                  
+                                                                     
+break;                                                               
+
+//if Pentium II was chosen                                                                     
+case 'P':                                                            
+case 'p':                                                            
+
+//deciding if monitor was used                                                                                                                   
+cout<<"\nWas a monitor rented?"
+    <<”\n(y for yes or n for no): “;                                                             
+cin.get();                                                           
+monitor_ch=cin.get();                                                  
+                                                                       
+//deciding if printer was used                                                                                                                   
+cout<<"\nDid you also rent a printer?"
+    <<”\n(y for yes or n for no): “;                                                                                            
+cin.get();                                                             
+printer_ch= cin.get();                                                 
+
+//getting number of days user rented equipment                                                                                                                                                  
+cout<<"\nEnter number of days equipment was rented: ";                 
+cin>> cust_days;                                                       
+                                                                       
+//calculations if monitor and printer were rented
+if ( (monitor_ch=='y' || monitor_ch=='Y') && (printer_ch=='y' ||       
+printer_ch=='Y') )                                                       
+{                                                                        
+cust_charge=rate_F_5 * cust_days;                                        
+disp_charge= rate_F_5;   
+tot_charge +=cust_charge;
+++num_of_p;
+++num_cust;                                                                                                                       
+}                                                                        
+
+//calculations if monitor was rented but printer was not                                                                        
+if ( (monitor_ch=='y' || monitor_ch== 'Y') && (printer_ch=='n' ||        
+printer_ch== 'N') )                                                      
+{                                                                        
+cust_charge=rate_F_6 * cust_days;                                        
+disp_charge= rate_F_6;  
+tot_charge +=cust_charge;  
+++num_of_p;                                                                                                                    ++num_cust;   
+}                                                                         
+
+//calculations if monitor was not rented but printer was
+if ( (monitor_ch=='n' || monitor_ch=='N') && (printer_ch=='y' ||          
+printer_ch== 'Y') )                                                       
+{                                                                         
+cust_charge=rate_F_7 * cust_days;                                         
+disp_charge= rate_F_7;    
+tot_charge +=cust_charge;
+++num_of_p;
+++num_cust;                                                                                                                    
+}                                                                         
+
+//calculations if monitor and printer were not rented                                                                          
+if ( (monitor_ch=='n' || monitor_ch=='N') && (printer_ch=='n' ||         
+printer_ch== 'N') )                                                      
+{                                                                        
+cust_charge=rate_F_8 * cust_days;                                        
+disp_charge= rate_F_8;     
+tot_charge +=cust_charge;
+++num_of_p;     
+++num_cust;                                                                                                                
+}                                                                        
+
+//clear screen
+for(line = 1; line<=25; ++line)
+cout<<"\n";
+                                                                         
+//displaying individual customer charge, rental charge per day, and days 
+//rented
+cout<<"\n\nCharge for customer:$"<<cust_charge                                 
+<<"\nRental charge per day: $"<<disp_charge
+<<"\nNumber of days rented: "<<cust_days;                              
+cout<<"\n\nDo you want to process another customer?"
+    <<”\n(y for yes or n for no): “;                                                                     
+cin.get();                                                      
+response=cin.get();                                             
+
+break;
+
+default:
+
+cout<<”\n\nError Incorrect input”;
+break;
+
+//closing bracket for switch statement                                                                                                                   
+} 
+//closing bracket for do-while loop                                                                                                                      
+} 
+                                                                
+while (response=='y' || response=='Y');                         
+
+//displaying number of customers processed, Pentium and Pentium II systems 
+//rented, and total customer payments collected
+if(response=='n' || response=='N')                              
+{
+//clear screen                                                                        
+for(line = 1; line<=25; ++line)
+cout<<"\n";
+
+cout<<"\nNumber of customers processed: "
+    <<num_cust
+    <<”\nNumber of Pentiums rented: “
+    <<num_of_f
+    <<”\nNumber of Pentium II’s rented: “
+    <<num_of_p
+    <<”\nTotal charged:$”
+    <<tot_charge;
+
+//clear screen
+for(line = 1; line<=10; ++line)
+cout<<"\n";
+}
+
+//exiting program  
+return 0;          
+                                                                                                                      
+}                                                               
+
