@@ -1,0 +1,127 @@
+//Program discription: This program determines the total //registration fee for a car based on its class and type.
+//This program compiled successfully.
+
+//header files
+#include <iostream.h>
+#include <iomanip.h>
+
+//main function
+int main ()                                   
+{                                             
+//declaring variables
+
+char	response;
+
+double reg_fee;
+
+int	car_class, 
+      car_type,
+line;
+
+//setting precision for dollar amounts
+cout << setprecision(2)                       
+     << setiosflags(ios::fixed)               
+     << setiosflags(ios::showpoint);          
+
+//do-while loop
+do
+{
+//clear screen                                                                                
+for(line = 1; line<=25; ++line)
+cout<<"\n";
+
+//getting car type
+cout<<”\n\nPlease enter your car type.” 
+    <<”\n1 for luxury class or 2 for all others: “;
+cin>>car_type;
+
+//getting car class
+cout<<”\n\nNow enter your car class.” 
+    <<”\n1 for city vehicles or 2 for non-city vehicles: “;
+cin>>car_class;
+
+if ( (car_type==1) && (car_class==1) )
+{
+//clear screen                                                                                
+for(line = 1; line<=25; ++line)
+cout<<"\n";
+
+//registration fee display for a luxury and city car
+reg_fee= 70.00;
+
+cout<<”\n\nTotal Registration Fee is $”<<reg_fee
+	//prompt for another car    
+    <<”\n\n\nWould you like to find a charge for another car?” 
+    <<”\nEnter y for yes and n for no: “;
+
+//used to clear \n if needed to loop again                                                                               
+cin.get();        
+response = cin.get();
+}
+
+if ( (car_type==1) && (car_class==2) )
+{
+//clear screen                                                                                
+for(line = 1; line<=25; ++line)
+cout<<"\n";
+
+//registration fee display for a luxury and non-city car
+reg_fee= 50.00;
+
+cout<<”\n\nTotal Registration Fee is $”<<reg_fee
+	//prompt for anther car    
+    <<”\n\n\nWould you like to find a charge for another car?” 
+    <<”\nEnter y for yes and n for no: “;
+
+//used to clear \n if needed to loop again     
+cin.get();                                                                                  
+response = cin.get();
+}
+
+//registration fee display for a non luxury and city car
+if ( (car_type==2) && (car_class==1) )
+{
+//clear screen                                                                                
+for(line = 1; line<=25; ++line)
+cout<<"\n";
+
+reg_fee= 55.00;
+
+cout<<”\n\nTotal Registration Fee is $”<<reg_fee
+	//prompt for anther car
+    <<”\n\n\nWould you like to find a charge for another car?”
+    <<”\nEnter y for yes and n for no: “;
+
+//used to clear \n if needed to loop again        
+cin.get();                                                                               
+response = cin.get();
+}
+
+if ( (car_type==2) && (car_class==2) )
+{
+//clear screen                                                                                
+for(line = 1; line<=25; ++line)
+cout<<"\n";
+
+//registration fee display for a non luxury and non-city car
+reg_fee= 35.00;
+
+cout<<”\n\nTotal Registration Fee is $”<<reg_fee
+	//prompt for another car
+    <<”\n\n\nWould you like to find a charge for another car?”
+    <<”\nEnter y for yes and n for no: “;
+
+//used to clear \n if needed to loop again                                                                               
+cin.get();        
+response = cin.get();
+}
+
+}//closing up do-while loop
+
+while (response ==’y’ || response==’Y’);
+
+//ending program
+if (response ==’n’ || response==’N’)
+return 0;
+
+}
