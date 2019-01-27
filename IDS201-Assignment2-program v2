@@ -1,0 +1,149 @@
+//Program description: This program computes 3 different 
+//depreciation methods for an asset using functions and //structures.
+//This program compiled successfully.
+
+//header files
+#include <iostream.h>
+#include <iomanip.h>
+#include "6584-2.h"
+
+//main function
+int main()
+{
+DEP_METHOD str_line;
+DEP_METHOD decline_bal;
+DEP_METHOD sum_year_digits;
+
+//declaring variables and pointers
+char option;
+
+char*	choice= &option;
+
+char* login;
+
+double salvage,
+           purchase;
+
+double*	salvage_ptr = &salvage;
+             
+double* purchase_ptr=&purchase;
+
+int	fact,
+            option_a_done = 0, 
+            option_b_done = 0,
+option_c_done = 0;
+
+//flags to signal when the option is used
+int*	done_a = &option_a_done;
+int*	done_b = &option_b_done;
+int*	done_c = &option_c_done;
+
+//setting precision
+cout<<setprecision(2)
+      <<setiosflags(ios::fixed)
+      <<setiosflags(ios::showpoint);
+
+//funtion to clear the screen
+Clear_Screen();
+
+//function for login
+login = Login();
+
+Clear_Screen();
+
+//function to get depreciation information
+Get_Dep_Info(&salvage, &purchase);
+
+Clear_Screen();
+
+//clearing \n from login
+cin.get();                            
+
+while(option_a_done ==0 || option_b_done == 0 || option_c_done == 0)
+{
+Clear_Screen();
+
+//function for main menu
+option = Display_Menu(option_a_done, option_b_done, option_c_done, option);
+
+//switch statement
+switch (option)
+{
+
+//if method A chosen 
+case 'a':                                          
+case 'A':                                               
+
+Clear_Screen();
+str_line= Calc_Straight_Line(salvage, purchase, &option_a_done);
+Clear_Screen();
+Disp_Schedule (str_line, purchase, salvage);
+Pause ();
+break;
+
+//if method B is chosen 
+case 'b':                                                    
+case 'B':
+
+Clear_Screen();
+fact= Get_Dep_Factor ();
+Clear_Screen();
+decline_bal = Calc_Declining_Bal (salvage, purchase, &option_b_done, fact);
+Clear_Screen();
+Disp_Schedule (decline_bal,purchase, salvage);
+Pause ();
+
+break;
+
+//if method C is chosen 
+case 'c':
+case 'C':
+
+Clear_Screen();
+sum_year_digits = Calc_Sum_Year_Digits (salvage, purchase, &option_c_done);
+Clear_Screen();
+Disp_Schedule (sum_year_digits,purchase, salvage);
+Pause ();
+break;
+
+//if choice q is chosen
+case 'q':
+case 'Q':
+
+Clear_Screen();
+cout << "Ending Program"
+       <<???\n\nThank you ???
+        <<login
+        <<"\n\n";      
+
+exit(1);
+break;
+
+//if user enters invalid choice at menu
+default:                                            
+                                                             
+Clear_Screen();         
+
+cout << "\n\n\n\n\tImproper choice.";            
+                                                        
+Pause ();     
+
+break;                                         
+}
+
+}
+
+//de-alocating heap storage used
+delete []login;
+
+Clear_Screen();
+
+//ending statement after all choice are used
+cout<<???Ending Program???
+    <<???\n\nThank you ???
+    <<login
+    <<"\n\n";      
+  
+return 0;            
+} 
+                   
